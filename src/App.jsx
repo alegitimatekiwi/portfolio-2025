@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowDownRight, Linkedin, FileText, ArrowRight, Github } from "lucide-react";
-// 1. IMPORT ROUTING TOOLS
-import { Routes, Route, Link } from "react-router-dom";
-// 2. IMPORT YOUR NEW PAGE
-import HipocampusProject from "./HipocampusProject";
+import { ArrowUp, Linkedin, FileText, ArrowRight, Github } from "lucide-react";
+import { Routes, Route, Link } from "react-router-dom"; 
+// ^ Keep this if you have the router installed
+
+import HipocampusProject from "./HipocampusProject"; 
+// ^ Keep this if you created the file
 
 /* =============================================================================
   FLIP LINK COMPONENT
@@ -19,10 +20,17 @@ const FlipLink = ({ children, href, className = "" }) => {
       className={`relative block overflow-hidden whitespace-nowrap text-6xl md:text-8xl font-bold uppercase leading-[0.9] ${className}`}
       style={{ fontFamily: "'Oswald', sans-serif" }} 
     >
-      <motion.div variants={{ initial: { y: 0 }, hovered: { y: "-100%" } }} transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}>
+      <motion.div
+        variants={{ initial: { y: 0 }, hovered: { y: "-100%" } }}
+        transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
+      >
         {children}
       </motion.div>
-      <motion.div className="absolute inset-0 text-lime-400" variants={{ initial: { y: "100%" }, hovered: { y: 0 } }} transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}>
+      <motion.div
+        className="absolute inset-0 text-lime-400"
+        variants={{ initial: { y: "100%" }, hovered: { y: 0 } }}
+        transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
+      >
         {children}
       </motion.div>
     </motion.a>
@@ -37,16 +45,31 @@ const NavLink = ({ children, href }) => {
       whileHover="hovered"
       className="relative block overflow-hidden text-sm font-medium uppercase tracking-wider text-zinc-400 transition-colors hover:text-lime-400"
     >
-      <motion.div variants={{ initial: { y: 0 }, hovered: { y: "-100%" } }} transition={{ duration: 0.2 }}>{children}</motion.div>
-      <motion.div className="absolute inset-0 text-lime-400" variants={{ initial: { y: "100%" }, hovered: { y: 0 } }} transition={{ duration: 0.2 }}>{children}</motion.div>
+      <motion.div
+        variants={{ initial: { y: 0 }, hovered: { y: "-100%" } }}
+        transition={{ duration: 0.2 }}
+      >
+        {children}
+      </motion.div>
+      <motion.div
+        className="absolute inset-0 text-lime-400"
+        variants={{ initial: { y: "100%" }, hovered: { y: 0 } }}
+        transition={{ duration: 0.2 }}
+      >
+        {children}
+      </motion.div>
     </motion.a>
   );
 };
 
+/* =============================================================================
+  SUBTITLE COMPONENT (Updated Style: Italic, Normal Case, De-emphasized)
+  =============================================================================
+*/
 const Subtitle = ({ children }) => (
   <motion.h4 
-    className="text-lime-400 font-bold uppercase tracking-widest text-xs mb-3 cursor-default inline-block"
-    whileHover={{ scale: 1.1, originX: 0 }} 
+    className="text-lime-400 font-medium italic text-lg mb-2 cursor-default inline-block"
+    whileHover={{ scale: 1.05, originX: 0 }} 
     transition={{ type: "spring", stiffness: 300 }}
   >
     {children}
@@ -89,7 +112,6 @@ const ProjectCard = ({ title, category, description, image, delay, linkTo }) => 
           {description}
         </p>
         
-        {/* CONDITIONAL LINK: If 'linkTo' is provided, use Link. Otherwise use div. */}
         {linkTo ? (
             <Link to={linkTo} className="mt-auto flex items-center gap-2 text-lime-400 text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors cursor-pointer">
                 Read More <ArrowRight size={14} />
@@ -105,7 +127,7 @@ const ProjectCard = ({ title, category, description, image, delay, linkTo }) => 
 };
 
 /* =============================================================================
-  HOME PAGE COMPONENT (The Portfolio)
+  HOME PAGE COMPONENT
   =============================================================================
 */
 function Home() {
@@ -156,7 +178,8 @@ function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-zinc-950 text-white selection:bg-lime-400 selection:text-black cursor-none overflow-x-hidden">
+    // 'md:cursor-none' hides cursor only on desktop. 'cursor-auto' restores touch scrolling on mobile.
+    <div className="relative min-h-screen bg-zinc-950 text-white selection:bg-lime-400 selection:text-black md:cursor-none cursor-auto overflow-x-hidden w-full">
       
       <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.03]"
            style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} 
@@ -258,7 +281,7 @@ function Home() {
       <section id="about" className="relative z-10 min-h-screen flex items-center justify-center px-6 py-12 bg-zinc-950">
         <div className="max-w-6xl w-full flex flex-col md:flex-row gap-16 items-start">
             
-            {/* LEFT SIDEBAR: Photo + Involvements */}
+            {/* LEFT SIDEBAR */}
             <div className="w-64 md:w-80 flex flex-col gap-8 shrink-0 relative sticky top-32">
                 
                 {/* Photo */}
@@ -279,7 +302,7 @@ function Home() {
                     />
                 </motion.div>
 
-                {/* Involvements Sidebar */}
+                {/* INVOLVEMENTS (Sidebar) */}
                 <motion.div 
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -288,13 +311,13 @@ function Home() {
                     className="hidden md:block"
                 >
                     <Subtitle>Involvements</Subtitle>
-                    {/* CHANGED: text-xs to text-sm */}
                     <ul className="text-zinc-400 text-sm space-y-2 mb-6 mt-2">
                         <li className="flex items-start gap-2"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime-400 shrink-0"/>Undergraduate Student Ambassador</li>
                         <li className="flex items-start gap-2"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime-400 shrink-0"/>BUSN70 (Lead TA)</li>
                         <li className="flex items-start gap-2"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime-400 shrink-0"/>Miller Center Data Intern</li>
                         <li className="flex items-start gap-2"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime-400 shrink-0"/>SCU INFORMS (President)</li>
-                        <li className="flex items-start gap-2"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime-400 shrink-0"/>The Redwood Yearbook (Editor)</li>
+                        {/* UPDATED: Redwood Yearbook */}
+                        <li className="flex items-start gap-2"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime-400 shrink-0"/>Redwood Yearbook (Managing Editor)</li>
                         <li className="flex items-start gap-2"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime-400 shrink-0"/>The Santa Clara (Photographer)</li>
                         <li className="flex items-start gap-2"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime-400 shrink-0"/>IS Network (Dir. Marketing)</li>
                         <li className="flex items-start gap-2"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime-400 shrink-0"/>GetVirtual (Project Manager)</li>
@@ -378,18 +401,29 @@ function Home() {
 
                         <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} transition={{ delay: 0.4 }}>
                             <Subtitle>Relevant Coursework</Subtitle>
-                            <div className="text-zinc-400 text-sm space-y-4">
+                            {/* UPDATED: One course per line format */}
+                            <div className="text-zinc-400 text-sm space-y-6">
                                 <div>
-                                    <p className="text-white font-bold text-xs uppercase tracking-wider mb-1">Data Architecture & Informatics</p>
-                                    <p className="leading-relaxed">Database Management Systems (OMIS 105), Accounting Data Analysis (ACTG 120), Applied Econometrics (ECON 173)</p>
+                                    <p className="text-white font-bold text-xs uppercase tracking-wider mb-2">Data Architecture & Informatics</p>
+                                    <ul className="space-y-1 list-none">
+                                        <li>Database Management Systems (OMIS 105)</li>
+                                        <li>Accounting Data Analysis (ACTG 120)</li>
+                                        <li>Applied Econometrics (ECON 173)</li>
+                                    </ul>
                                 </div>
                                 <div>
-                                    <p className="text-white font-bold text-xs uppercase tracking-wider mb-1">Financial Rigor & Modeling</p>
-                                    <p className="leading-relaxed">Intermediate Financial Accounting (ACTG 130), Financial Management (FNCE 121S)</p>
+                                    <p className="text-white font-bold text-xs uppercase tracking-wider mb-2">Financial Rigor & Modeling</p>
+                                    <ul className="space-y-1 list-none">
+                                        <li>Intermediate Financial Accounting (ACTG 130)</li>
+                                        <li>Financial Management (FNCE 121S)</li>
+                                    </ul>
                                 </div>
                                 <div>
-                                    <p className="text-white font-bold text-xs uppercase tracking-wider mb-1">Strategic Ventures & Research</p>
-                                    <p className="leading-relaxed">Venture Capitalist Essentials (MGMT 167), Santa Clara Urban Issues Research Lab (ECON 192)</p>
+                                    <p className="text-white font-bold text-xs uppercase tracking-wider mb-2">Strategic Ventures & Research</p>
+                                    <ul className="space-y-1 list-none">
+                                        <li>Venture Capitalist Essentials (MGMT 167)</li>
+                                        <li>Santa Clara Urban Issues Research Lab (ECON 192)</li>
+                                    </ul>
                                 </div>
                             </div>
                         </motion.div>
@@ -409,21 +443,19 @@ function Home() {
             className="mb-16"
           >
             <h2 className="text-lime-400 font-serif italic text-xl mb-2">My Work.</h2>
-            {/* UPDATED TITLE */}
             <h3 className="text-4xl md:text-5xl font-bold uppercase tracking-tighter text-white" style={{ fontFamily: "'Oswald', sans-serif" }}>
                 Projects & Analysis.
             </h3>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* UPDATED CARD 1 WITH LINK */}
             <ProjectCard 
               delay={0.1}
               title="Automation & Impact Report" 
               category="Data Engineering" 
               description="Operations & Analytics Intern at Hipocampus Centros de Aprendizaje, Summer 2025."
               image="/hipocampus.jpg"
-              linkTo="/projects/hipocampus" // This enables the routing!
+              linkTo="/projects/hipocampus" 
             />
             
             <ProjectCard 
@@ -445,12 +477,17 @@ function Home() {
         </div>
       </section>
 
-      <div className="fixed bottom-8 right-8 hidden md:block z-50">
-        <ArrowDownRight className="h-12 w-12 text-lime-400" />
-      </div>
+      {/* SCROLL TO TOP BUTTON (Updated to ArrowUp) */}
+      <button 
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="fixed bottom-8 right-8 z-50 p-4 rounded-full bg-zinc-900/50 backdrop-blur-md border border-zinc-800 text-lime-400 hover:bg-lime-400 hover:text-black transition-all group"
+      >
+        <ArrowUp className="h-6 w-6 group-hover:-translate-y-1 transition-transform" />
+      </button>
 
+      {/* CUSTOM CURSOR: Hidden on Mobile (md:block) */}
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-4 h-4 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference hidden md:block"
         animate={{
             x: mousePosition.x - 8,
             y: mousePosition.y - 8,
