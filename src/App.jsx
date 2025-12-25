@@ -89,15 +89,15 @@ const ProjectCard = ({ title, category, description, image, delay, linkTo }) => 
       className="group relative flex flex-col overflow-hidden rounded-2xl bg-zinc-900 border border-zinc-800 w-full"
     >
       <div className="relative h-64 overflow-hidden">
-        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+        {/* Only show opacity hover effect on desktop to save mobile performance */}
+        <div className="hidden md:block absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
         <img 
           src={image} 
           alt={title} 
-          // Mobile: Full Color (grayscale-0). Desktop: Grayscale until hover.
           className="h-full w-full object-cover transition-transform duration-700 md:grayscale md:group-hover:grayscale-0 grayscale-0 group-hover:scale-110"
         />
         <div className="absolute top-4 left-4 z-20">
-          <span className="px-3 py-1 bg-black/50 backdrop-blur-md text-xs font-bold uppercase tracking-wider text-white border border-white/10 rounded-full">
+          <span className="px-3 py-1 bg-black/80 md:bg-black/50 md:backdrop-blur-md text-xs font-bold uppercase tracking-wider text-white border border-white/10 rounded-full">
             {category}
           </span>
         </div>
@@ -155,11 +155,9 @@ function Home() {
     return () => clearInterval(interval);
   }, [isPhotoHovered, photos.length]);
 
-  // SCROLL FIX: Only run heavy mouse logic on Desktop (pointer: fine)
   useEffect(() => {
+    // SCROLL FIX: Only run mouse listeners on desktop to prevent mobile scroll lag
     const isDesktop = window.matchMedia("(pointer: fine)").matches;
-    
-    // Only add listener if we are on a device with a mouse
     if (isDesktop) {
         const updateMousePosition = (e) => setMousePosition({ x: e.clientX, y: e.clientY });
         window.addEventListener('mousemove', updateMousePosition);
@@ -189,29 +187,31 @@ function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-zinc-950 text-white selection:bg-lime-400 selection:text-black md:cursor-none cursor-auto overflow-x-hidden w-full">
+    <div className="relative min-h-screen bg-zinc-950 text-white selection:bg-lime-400 selection:text-black md:cursor-none cursor-auto w-full">
       
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.03]"
+      {/* PERFORMANCE FIX: Hidden on mobile (hidden md:block) to prevent scroll lag */}
+      <div className="hidden md:block pointer-events-none fixed inset-0 z-0 opacity-[0.03]"
            style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} 
       ></div>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap');
         
-        /* Enable smooth momentum scrolling on iOS */
-        html { 
-            scroll-behavior: smooth; 
-            -webkit-overflow-scrolling: touch;
+        /* SCROLL FIXES */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-overflow-scrolling: touch; /* smooth momentum scrolling */
         }
         
-        /* Hide scrollbars but keep functionality */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
       {/* NAVIGATION */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center gap-4 px-6 py-4 md:px-12 bg-zinc-950/90 backdrop-blur-md border-b border-white/5 justify-center md:justify-start">
-        {/* LOGO: Desktop (Restored full name) */}
+      {/* Reduced blur on mobile for performance */}
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center gap-4 px-6 py-4 md:px-12 bg-zinc-950/90 md:backdrop-blur-md border-b border-white/5 justify-center md:justify-start">
+        {/* LOGO: Desktop */}
         <div className="hidden md:block text-xl font-bold uppercase tracking-tighter shrink-0 mr-8" style={{ fontFamily: "'Oswald', sans-serif" }}>
           Elaine Zhang<span className="text-lime-400">.</span>
         </div>
@@ -363,7 +363,7 @@ function Home() {
                             </h3>
                         </div>
 
-                        {/* Content: CENTERED, WIDER MARGINS (px-10) */}
+                        {/* Content */}
                         <motion.div 
                             variants={bodyTextAnim}
                             initial="hidden"
