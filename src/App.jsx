@@ -93,6 +93,7 @@ const ProjectCard = ({ title, category, description, image, delay, linkTo }) => 
         <img 
           src={image} 
           alt={title} 
+          // Mobile: Full Color (grayscale-0). Desktop: Grayscale until hover.
           className="h-full w-full object-cover transition-transform duration-700 md:grayscale md:group-hover:grayscale-0 grayscale-0 group-hover:scale-110"
         />
         <div className="absolute top-4 left-4 z-20">
@@ -154,26 +155,32 @@ function Home() {
     return () => clearInterval(interval);
   }, [isPhotoHovered, photos.length]);
 
+  // SCROLL FIX: Only run heavy mouse logic on Desktop (pointer: fine)
   useEffect(() => {
-    const updateMousePosition = (e) => setMousePosition({ x: e.clientX, y: e.clientY });
-    window.addEventListener('mousemove', updateMousePosition);
+    const isDesktop = window.matchMedia("(pointer: fine)").matches;
+    
+    // Only add listener if we are on a device with a mouse
+    if (isDesktop) {
+        const updateMousePosition = (e) => setMousePosition({ x: e.clientX, y: e.clientY });
+        window.addEventListener('mousemove', updateMousePosition);
 
-    const handleMouseEnter = () => setIsHoveringLink(true);
-    const handleMouseLeave = () => setIsHoveringLink(false);
+        const handleMouseEnter = () => setIsHoveringLink(true);
+        const handleMouseLeave = () => setIsHoveringLink(false);
 
-    const clickableElements = document.querySelectorAll('a, button, img, h4, .group');
-    clickableElements.forEach(el => {
-        el.addEventListener('mouseenter', handleMouseEnter);
-        el.addEventListener('mouseleave', handleMouseLeave);
-    });
-
-    return () => {
-        window.removeEventListener('mousemove', updateMousePosition);
+        const clickableElements = document.querySelectorAll('a, button, img, h4, .group');
         clickableElements.forEach(el => {
-            el.removeEventListener('mouseenter', handleMouseEnter);
-            el.removeEventListener('mouseleave', handleMouseLeave);
+            el.addEventListener('mouseenter', handleMouseEnter);
+            el.addEventListener('mouseleave', handleMouseLeave);
         });
-    };
+
+        return () => {
+            window.removeEventListener('mousemove', updateMousePosition);
+            clickableElements.forEach(el => {
+                el.removeEventListener('mouseenter', handleMouseEnter);
+                el.removeEventListener('mouseleave', handleMouseLeave);
+            });
+        };
+    }
   }, []);
 
   const bodyTextAnim = {
@@ -190,14 +197,21 @@ function Home() {
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap');
-        html { scroll-behavior: smooth; }
+        
+        /* Enable smooth momentum scrolling on iOS */
+        html { 
+            scroll-behavior: smooth; 
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Hide scrollbars but keep functionality */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
       {/* NAVIGATION */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center gap-4 px-6 py-4 md:px-12 bg-zinc-950/90 backdrop-blur-md border-b border-white/5 justify-center md:justify-start">
-        {/* LOGO: Desktop */}
+        {/* LOGO: Desktop (Restored full name) */}
         <div className="hidden md:block text-xl font-bold uppercase tracking-tighter shrink-0 mr-8" style={{ fontFamily: "'Oswald', sans-serif" }}>
           Elaine Zhang<span className="text-lime-400">.</span>
         </div>
@@ -349,14 +363,13 @@ function Home() {
                             </h3>
                         </div>
 
-                        {/* Content: CENTERED, WIDER MARGINS */}
+                        {/* Content: CENTERED, WIDER MARGINS (px-10) */}
                         <motion.div 
                             variants={bodyTextAnim}
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: false }}
-                            // Updated: text-center and px-6 for wider side margins
-                            className="text-zinc-400 text-sm leading-relaxed text-center px-6"
+                            className="text-zinc-400 text-sm leading-relaxed text-center px-10"
                         >
                             <p className="mb-4">
                               I am always up for a hike or spending time outside. I have a love for nature and sustainability.
