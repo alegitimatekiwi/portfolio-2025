@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { ArrowUp, Linkedin, FileText, ArrowRight, Github, ChevronDown, Camera, Mail, MapPin } from "lucide-react"; 
 import { Routes, Route, Link } from "react-router-dom"; 
 
+// --- PROJECT PAGE IMPORTS ---
+// Ensure these files exist in your src folder
 import HipocampusProject from "./HipocampusProject"; 
+import RealSeqProject from "./RealSeqProject";       
+import TamalesProject from "./TamalesProject";       
+import EconometricsProject from "./EconometricsProject"; 
+import SCUContentProject from "./SCUContentProject"; 
+import TShirtProject from "./TShirtProject";         
 
 /* =============================================================================
   FLIP LINK COMPONENT
@@ -64,7 +71,7 @@ const NavLink = ({ children, href }) => {
   NAV DROPDOWN COMPONENT
   =============================================================================
 */
-const NavDropdown = ({ title, items, onSelect }) => {
+const NavDropdown = ({ title, items }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -92,13 +99,13 @@ const NavDropdown = ({ title, items, onSelect }) => {
             className="md:absolute md:top-full md:left-0 md:mt-4 md:w-48 flex flex-col gap-3 p-4 bg-zinc-900/95 backdrop-blur-md border border-zinc-800 rounded-xl z-50 fixed left-6 right-6 top-20 md:fixed-none md:static md:mx-0 shadow-2xl md:shadow-none"
           >
             {items.map((item, idx) => (
-              <button 
+              <a 
                 key={idx}
-                onClick={() => onSelect(item.filterId)}
+                href={item.href}
                 className="block text-left text-xs font-bold uppercase tracking-wider text-zinc-400 hover:text-lime-400 transition-colors whitespace-nowrap w-full"
               >
                 {item.label}
-              </button>
+              </a>
             ))}
           </motion.div>
         )}
@@ -150,9 +157,8 @@ const ExperienceCard = ({ role, org, image, location, period }) => (
     viewport={{ once: false, amount: 0.1 }}
     transition={{ duration: 0.5 }}
     whileHover={{ scale: 1.02 }}
-    className="flex flex-row items-stretch gap-0 bg-zinc-900/50 border border-zinc-800 rounded-xl transition-colors group cursor-pointer hover:border-zinc-700 h-full overflow-hidden"
+    className="flex flex-row items-stretch gap-0 bg-zinc-900/50 border border-zinc-800 rounded-xl transition-colors group cursor-none hover:border-zinc-700 h-full overflow-hidden"
   >
-    {/* Image: Fixed width, responsive */}
     <div className="w-24 md:w-32 shrink-0 relative">
         <img 
             src={image} 
@@ -161,7 +167,6 @@ const ExperienceCard = ({ role, org, image, location, period }) => (
         />
     </div>
     
-    {/* Text: min-w-0 prevents flex items from overflowing container */}
     <div className="flex flex-col justify-center p-4 w-full min-w-0">
         <h5 className="text-white font-bold text-xs md:text-sm uppercase leading-tight md:whitespace-nowrap md:overflow-hidden md:text-ellipsis">
             {role}
@@ -261,6 +266,142 @@ const InterestCard = ({ name, image }) => (
 );
 
 /* =============================================================================
+  EXPERIENCE DATA
+  =============================================================================
+*/
+const experienceData = [
+  // INTERNSHIPS
+  {
+    id: 1,
+    category: "internship",
+    role: "Operations & Analytics",
+    org: <>Hipocampus Centros <br/>de Aprendizaje</>,
+    location: "Santa Clara, CA",
+    period: "July 2025 - Ongoing",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop"
+  },
+  {
+    id: 2,
+    category: "internship",
+    role: "Digital Marketing",
+    org: "TeamLink",
+    location: "Sydney, Australia",
+    period: "June 2024 - July 2024",
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop"
+  },
+  {
+    id: 3,
+    category: "internship",
+    role: "EC Department Intern",
+    org: "Crocs Asia",
+    location: "Shanghai, China",
+    period: "July 2023 - Aug 2023",
+    image: "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?q=80&w=2615&auto=format&fit=crop"
+  },
+  // JOBS
+  {
+    id: 4,
+    category: "job",
+    role: "Lead TA (BUSN70)",
+    org: "Santa Clara University",
+    location: "Santa Clara, CA",
+    period: "March 2025 - Ongoing",
+    image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=2574&auto=format&fit=crop"
+  },
+  {
+    id: 5,
+    category: "job",
+    role: "Ugrad Ambassador",
+    org: "SCU Undergraduate Admissions",
+    location: "Santa Clara, CA",
+    period: "April 2024 - Ongoing",
+    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2670&auto=format&fit=crop"
+  },
+  {
+    id: 6,
+    category: "job",
+    role: "International Intern",
+    org: "SCU Undergraduate Admissions",
+    location: "Santa Clara, CA",
+    period: "Jan 2025 - Ongoing",
+    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2669&auto=format&fit=crop"
+  },
+  {
+    id: 7,
+    category: "job",
+    role: "Managing Editor",
+    org: "The Redwood Yearbook",
+    location: "Santa Clara, CA",
+    period: "March 2025 - Ongoing",
+    image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2670&auto=format&fit=crop"
+  },
+  {
+    id: 8,
+    category: "job",
+    role: "Photographer",
+    org: "The Santa Clara Newspaper",
+    location: "Santa Clara, CA",
+    period: "Sept 2025 - Ongoing",
+    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=2528&auto=format&fit=crop"
+  },
+  // INVOLVEMENTS
+  {
+    id: 9,
+    category: "involvement",
+    role: "President",
+    org: "SCU INFORMS",
+    location: "Santa Clara, CA",
+    period: "March 2025 - Ongoing",
+    image: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=2670&auto=format&fit=crop"
+  },
+  {
+    id: 10,
+    category: "involvement",
+    role: "Director of Marketing",
+    org: "Info. Systems Network", 
+    location: "Santa Clara, CA",
+    period: "Feb 2025 - Ongoing",
+    image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=2574&auto=format&fit=crop"
+  },
+  {
+    id: 14,
+    category: "involvement",
+    role: "2027 Cohort Member", 
+    org: "ACE Leadership Program", 
+    location: "Santa Clara, CA",
+    period: "Aug 2023 - Present",
+    image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2684&auto=format&fit=crop"
+  },
+  {
+    id: 11,
+    category: "involvement",
+    role: "Member", 
+    org: "Civil Society Institute",
+    location: "Santa Clara, CA",
+    period: "Sept 2024 - Present", 
+    image: "https://images.unsplash.com/photo-1617196038658-4101f9e35da4?q=80&w=2670&auto=format&fit=crop"
+  },
+  {
+    id: 12,
+    category: "involvement",
+    role: "Participant", 
+    org: "Japanese Conversation Table",
+    location: "Santa Clara, CA",
+    period: "March 2023 - Present", 
+    image: "https://images.unsplash.com/photo-1545987796-200677ee8e00?q=80&w=2670&auto=format&fit=crop"
+  },
+  {
+    id: 13,
+    category: "involvement",
+    role: "Fellow",
+    org: "Possible Tech Accelerator Program", 
+    location: "Remote",
+    period: "Jan 2025 - Mar 2025",
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2670&auto=format&fit=crop"
+  }
+];
+
+/* =============================================================================
   HOME PAGE COMPONENT
   =============================================================================
 */
@@ -279,6 +420,12 @@ function Home() {
   });
 
   const photos = ["/ezheadshot.jpg", "/hobby1.jpg", "/hobby2.jpg", "/hobby3.jpg"];
+
+  // FILTER LOGIC (Kept for state stability, though not used in UI now)
+  const filteredExperiences = useMemo(() => {
+    if (filter === "all") return experienceData;
+    return experienceData.filter((item) => item.category === filter);
+  }, [filter]);
 
   useEffect(() => {
     let interval;
@@ -325,7 +472,7 @@ function Home() {
   // Nav Selection Handler
   const handleNavSelection = (category) => {
     setFilter(category);
-    const element = document.getElementById(category === 'internship' ? "internships" : category === 'job' ? "campus-jobs" : "clubs");
+    const element = document.getElementById("experiences");
     if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
     }
@@ -347,6 +494,14 @@ function Home() {
             width: 100%;
             -webkit-overflow-scrolling: touch;
         }
+        
+        /* HIDE DEFAULT POINTER CURSOR ONLY ON MOUSE DEVICES */
+        @media (pointer: fine) {
+            a, button, [role="button"] {
+                cursor: none !important;
+            }
+        }
+
         ::-webkit-scrollbar { display: none; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -360,27 +515,27 @@ function Home() {
             </div>
             
             <div className="flex flex-1 overflow-x-auto md:overflow-visible gap-3 md:gap-5 items-center justify-between md:justify-start no-scrollbar relative pr-12 md:pr-0">
-              <NavLink href="#projects">Projects</NavLink>
+              <NavLink href="#projects">Analyses</NavLink>
               
               <NavDropdown 
-                title="Experiences" 
+                title="Ventures" 
                 onSelect={handleNavSelection}
                 items={[
-                    { label: "Internships", filterId: "internship" },
-                    { label: "On-Campus Jobs", filterId: "job" },
-                    { label: "Club Involvements", filterId: "involvement" }
+                    { label: "Internships", href: "#internships" },
+                    { label: "On-Campus Jobs", href: "#campus-jobs" },
+                    { label: "Club Involvements", href: "#clubs" }
                 ]}
               />
 
-              <NavLink href="#interests">Interests</NavLink>
-              <NavLink href="#contact">Contact</NavLink>
+              <NavLink href="#interests">Side Quests</NavLink>
+              <NavLink href="#contact">Connect</NavLink>
             </div>
         </div>
         
         {/* PROGRESS BAR */}
         <motion.div
             className="absolute bottom-0 left-0 right-0 h-1 bg-lime-400 origin-left z-50"
-            style={{ scaleX }}
+            style={{ scaleX: useSpring(useScroll().scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 }) }}
         />
       </nav>
 
@@ -425,11 +580,11 @@ function Home() {
             </motion.div>
 
             <div className="md:hidden mt-8 mb-2 flex flex-wrap items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider text-lime-400">
-                <a href="#projects">Projects</a>
+                <a href="#projects">Analyses</a>
                 <span className="text-zinc-600">|</span>
-                <a href="#experience">Experience</a>
+                <a href="#experiences">Ventures</a>
                 <span className="text-zinc-600">|</span>
-                <a href="#involvements">Involvements</a>
+                <a href="#contact">Connect</a>
             </div>
         </div>
 
@@ -441,9 +596,9 @@ function Home() {
           transition={{ duration: 0.8 }}
         >
           <div className="hidden md:flex flex-col items-start space-y-2 mb-8">
-            <FlipLink href="#projects">Projects</FlipLink>
-            <FlipLink href="#experience">Experience</FlipLink>
-            <FlipLink href="#involvements">Involvements</FlipLink>
+            <FlipLink href="#projects">Analyses</FlipLink>
+            <FlipLink href="#experiences">Ventures</FlipLink>
+            <FlipLink href="#contact">Connect</FlipLink>
           </div>
 
           <p className="mb-4 text-lime-400 font-serif italic text-xl hidden md:block">Business & Technology</p>
@@ -693,7 +848,7 @@ function Home() {
       </div>
 
       {/* PROJECTS SECTION - EXPANDED CONTAINER for 6 Cards */}
-      <section id="projects" className="relative z-10 min-h-screen px-6 pt-0 pb-12 md:pb-12 bg-zinc-950 flex flex-col justify-start md:justify-center">
+      <section id="projects" className="relative z-10 min-h-screen px-6 pt-0 pb-12 md:pb-12 bg-zinc-950 flex flex-col justify-start md:justify-center scroll-mt-32">
         {/* CHANGED: max-w-7xl makes the cards less wide (more standard) */}
         <div className="w-full max-w-7xl mx-auto">
           <motion.div 
@@ -712,7 +867,7 @@ function Home() {
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
             <ProjectCard 
               delay={0.1}
-              title={<>Automation &<br />Impact Report</>}
+              title="Automation & Impact Report"
               category="Data Engineering" 
               description="Operations & Analytics Intern at Hipocampus Centros de Aprendizaje, Summer 2025."
               image="/hipocampus.jpg"
@@ -725,6 +880,7 @@ function Home() {
               category="Social Media"
               description="Strategizing for RealSeq BioTech and Hale.Nani.Kai Vacation Rental."
               image="/getvirtual.jpg"
+              linkTo="/projects/realseq"
             />
 
             <ProjectCard 
@@ -733,14 +889,16 @@ function Home() {
               category="Website Building"
               description="Business optimization for Irving's Chicken Tamales Sole Proprietorship."
               image="/tamales.jpg"
+              linkTo="/projects/tamales"
             />
 
             <ProjectCard 
               delay={0.4}
-              title={<>Econometric<br />Projects & Reports</>}
+              title="Econometric Projects & Reports"
               category="Research"
               description="Impact of minimum wage, sporting events and crime rates, gender equality in Africa etc."
               image="/econometrics.jpg"
+              linkTo="/projects/econometrics"
             />
 
             {/* NEW CARD ADDED HERE */}
@@ -750,6 +908,7 @@ function Home() {
               category="Marketing & CRM"
               description="Created 10+ unique articles, administered Slate CRM, and spearheaded a WeChat platform launch for international student recruitment."
               image="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop"
+              linkTo="/projects/scu-content"
             />
 
             <ProjectCard 
@@ -758,6 +917,7 @@ function Home() {
               category="Entrepreneurship"
               description="Founded an online store for original comic T-shirts. Donated 100% of profits to support gender equality in rural Sichuan."
               image="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?q=80&w=2669&auto=format&fit=crop"
+              linkTo="/projects/tshirt"
             />
           </div>
         </div>
@@ -780,7 +940,7 @@ function Home() {
             >
                 <h2 className="text-lime-400 font-serif italic text-xl mb-2">My Journey.</h2>
                 <h3 className="text-4xl md:text-5xl font-bold uppercase tracking-tighter text-white" style={{ fontFamily: "'Oswald', sans-serif" }}>
-                    Experiences & Involvements.
+                    Ventures & Involvements.
                 </h3>
             </motion.div>
 
@@ -792,28 +952,9 @@ function Home() {
                     <SectionTitle title="Internships" />
                     
                     <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <ExperienceCard 
-                            role="Operations & Analytics"
-                            // CHANGED: Added line break for multi-line layout
-                            org={<>Hipocampus Centros<br/>de Aprendizaje</>}
-                            location="Santa Clara, CA"
-                            period="July 2025 - Ongoing"
-                            image="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop"
-                        />
-                        <ExperienceCard 
-                            role="Digital Marketing"
-                            org="TeamLink"
-                            location="Sydney, Australia"
-                            period="June 2024 - July 2024"
-                            image="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop"
-                        />
-                        <ExperienceCard 
-                            role="EC Department Intern"
-                            org="Crocs Asia"
-                            location="Shanghai, China"
-                            period="July 2023 - Aug 2023"
-                            image="https://images.unsplash.com/photo-1603808033192-082d6919d3e1?q=80&w=2615&auto=format&fit=crop"
-                        />
+                        {filteredExperiences.filter(item => item.category === 'internship').map(item => (
+                            <ExperienceCard key={item.id} {...item} />
+                        ))}
                     </div>
                 </div>
 
@@ -823,41 +964,9 @@ function Home() {
                     <SectionTitle title="On-Campus Jobs" />
 
                     <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <ExperienceCard 
-                            role="Lead TA (BUSN70)"
-                            org="Santa Clara University"
-                            location="Santa Clara, CA"
-                            period="March 2025 - Ongoing"
-                            image="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=2574&auto=format&fit=crop"
-                        />
-                        <ExperienceCard 
-                            role="Ugrad Ambassador"
-                            org="SCU Undergraduate Admissions"
-                            location="Santa Clara, CA"
-                            period="April 2024 - Ongoing"
-                            image="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2670&auto=format&fit=crop"
-                        />
-                        <ExperienceCard 
-                            role="International Intern"
-                            org="SCU Undergraduate Admissions"
-                            location="Santa Clara, CA"
-                            period="Jan 2025 - Ongoing"
-                            image="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2669&auto=format&fit=crop"
-                        />
-                        <ExperienceCard 
-                            role="Managing Editor"
-                            org="The Redwood Yearbook"
-                            location="Santa Clara, CA"
-                            period="March 2025 - Ongoing"
-                            image="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2670&auto=format&fit=crop"
-                        />
-                        <ExperienceCard 
-                            role="Photographer"
-                            org="The Santa Clara Newspaper"
-                            location="Santa Clara, CA"
-                            period="Sept 2025 - Ongoing"
-                            image="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=2528&auto=format&fit=crop"
-                        />
+                         {filteredExperiences.filter(item => item.category === 'job').map(item => (
+                            <ExperienceCard key={item.id} {...item} />
+                        ))}
                     </div>
                 </div>
 
@@ -867,41 +976,9 @@ function Home() {
                     <SectionTitle title="Club & Other Involvements" />
 
                     <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <ExperienceCard 
-                            role="President"
-                            org="SCU INFORMS"
-                            location="Santa Clara, CA"
-                            period="March 2025 - Ongoing"
-                            image="https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=2670&auto=format&fit=crop"
-                        />
-                        <ExperienceCard 
-                            role="Director of Marketing"
-                            org="IS Network"
-                            location="Santa Clara, CA"
-                            period="Feb 2025 - Ongoing"
-                            image="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2670&auto=format&fit=crop"
-                        />
-                        <ExperienceCard 
-                            role="Fellow/Member"
-                            org="Civil Society Institute"
-                            location="Santa Clara, CA"
-                            period="Present"
-                            image="https://images.unsplash.com/photo-1576267423048-15c0040fec78?q=80&w=2670&auto=format&fit=crop"
-                        />
-                        <ExperienceCard 
-                            role="Member"
-                            org="Japanese Conversation Table"
-                            location="Santa Clara, CA"
-                            period="Present"
-                            image="https://images.unsplash.com/photo-1528164344705-475426879893?q=80&w=2669&auto=format&fit=crop"
-                        />
-                        <ExperienceCard 
-                            role="Fellow"
-                            org="Possible"
-                            location="Remote"
-                            period="Jan 2025 - Mar 2025"
-                            image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2670&auto=format&fit=crop"
-                        />
+                         {filteredExperiences.filter(item => item.category === 'involvement').map(item => (
+                            <ExperienceCard key={item.id} {...item} />
+                        ))}
                     </div>
                 </div>
             </div>
@@ -918,10 +995,13 @@ function Home() {
         <div className="max-w-6xl w-full mx-auto">
             <SectionTitle title="Interests & Hobbies" />
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <InterestCard name="Hiking & Nature" image="/hobby1.jpg" />
+                <InterestCard name="Technology & AI" image="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2670&auto=format&fit=crop" />
                 <InterestCard name="Photography" image="/hobby2.jpg" />
                 <InterestCard name="Travel" image="/hobby3.jpg" />
-                <InterestCard name="Sustainability" image="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2613&auto=format&fit=crop" />
+                <InterestCard name="Digital Art" image="https://images.unsplash.com/photo-1560419015-7c427e8ae5ba?q=80&w=2670&auto=format&fit=crop" />
+                <InterestCard name="Piano" image="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=2670&auto=format&fit=crop" />
+                <InterestCard name="Anime" image="https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=2670&auto=format&fit=crop" />
+                <InterestCard name="Building Websites" image="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=2664&auto=format&fit=crop" />
             </div>
         </div>
       </section>
@@ -933,50 +1013,55 @@ function Home() {
 
       {/* NEW: CONTACT SECTION (Removed top padding) */}
       <section id="contact" className="relative z-10 px-6 pt-0 pb-24 bg-zinc-950 flex flex-col justify-center items-center border-t-0 border-zinc-800/50">
-        <div className="max-w-4xl w-full text-center">
-            <SectionTitle title="Let's Connect" />
-            <p className="text-zinc-400 mb-12 max-w-lg mx-auto">
-                I'm always open to discussing new opportunities, collaborations, or just chatting about data and sustainability.
-            </p>
+        <div className="max-w-5xl w-full">
+            <SectionTitle title="Let's Connect!" />
             
-            <div className="flex flex-col md:flex-row gap-8 justify-center items-center mb-12">
-                <a href="mailto:ezhang2@scu.edu" className="flex items-center gap-3 text-white hover:text-lime-400 transition-colors group">
-                    <div className="p-4 rounded-full bg-zinc-900 border border-zinc-800 group-hover:border-lime-400 transition-colors">
-                        <Mail size={24} />
-                    </div>
-                    <div className="text-left">
-                        <p className="text-xs text-zinc-500 uppercase tracking-widest">Email</p>
-                        <p className="font-bold">ezhang2@scu.edu</p>
-                    </div>
-                </a>
+            <div className="flex flex-col md:flex-row items-center gap-12 bg-zinc-900/30 p-8 rounded-3xl border border-zinc-800/50">
+                {/* Contact Photo */}
+                <div className="w-48 h-48 md:w-64 md:h-64 shrink-0 rounded-2xl overflow-hidden border-2 border-lime-400/20">
+                    <img 
+                        src="/ezheadshot.jpg" 
+                        alt="Contact Me" 
+                        className="w-full h-full object-cover object-[center_30%]"
+                    />
+                </div>
 
-                <a href="https://linkedin.com/in/elainezhang2027" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white hover:text-blue-400 transition-colors group">
-                    <div className="p-4 rounded-full bg-zinc-900 border border-zinc-800 group-hover:border-blue-400 transition-colors">
-                        <Linkedin size={24} />
-                    </div>
-                    <div className="text-left">
-                        <p className="text-xs text-zinc-500 uppercase tracking-widest">LinkedIn</p>
-                        <p className="font-bold">Elaine Zhang</p>
-                    </div>
-                </a>
+                {/* Contact Info */}
+                <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
+                    <p className="text-zinc-300 mb-8 text-lg leading-relaxed">
+                        I'd love to discuss new opportunities, collaborations, or just chatting about technology and entrepreneurship!
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 w-full">
+                        <div className="flex flex-col gap-1">
+                            <span className="text-xs font-bold uppercase tracking-widest text-lime-400">School Email</span>
+                            <a href="mailto:ezhang2@scu.edu" className="text-white hover:text-lime-400 transition-colors">ezhang2@scu.edu</a>
+                        </div>
 
-                <div className="flex items-center gap-3 text-white">
-                    <div className="p-4 rounded-full bg-zinc-900 border border-zinc-800">
-                        <MapPin size={24} />
+                        <div className="flex flex-col gap-1">
+                            <span className="text-xs font-bold uppercase tracking-widest text-lime-400">Personal Email</span>
+                            <a href="mailto:elaine.zhang.ly@gmail.com" className="text-white hover:text-lime-400 transition-colors">elaine.zhang.ly@gmail.com</a>
+                        </div>
+
+                        <div className="flex flex-col gap-1">
+                            <span className="text-xs font-bold uppercase tracking-widest text-lime-400">LinkedIn</span>
+                            <a href="https://linkedin.com/in/elainezhang2027" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400 transition-colors">Elaine Zhang</a>
+                        </div>
+
+                        <div className="flex flex-col gap-1">
+                            <span className="text-xs font-bold uppercase tracking-widest text-lime-400">Location</span>
+                            <span className="text-white">Santa Clara, CA</span>
+                        </div>
                     </div>
-                    <div className="text-left">
-                        <p className="text-xs text-zinc-500 uppercase tracking-widest">Location</p>
-                        <p className="font-bold">Santa Clara, CA</p>
-                    </div>
+
+                    <a 
+                        href="mailto:ezhang2@scu.edu"
+                        className="mt-8 inline-flex items-center gap-2 bg-lime-400 text-black px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:bg-white transition-colors"
+                    >
+                        Get In Touch <ArrowRight size={16} />
+                    </a>
                 </div>
             </div>
-
-            <a 
-                href="mailto:ezhang2@scu.edu"
-                className="inline-flex items-center gap-2 bg-lime-400 text-black px-8 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-white transition-colors"
-            >
-                Get In Touch <ArrowRight size={16} />
-            </a>
         </div>
       </section>
 
@@ -1005,6 +1090,11 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/projects/hipocampus" element={<HipocampusProject />} />
+      <Route path="/projects/realseq" element={<RealSeqProject />} />
+      <Route path="/projects/tamales" element={<TamalesProject />} />
+      <Route path="/projects/econometrics" element={<EconometricsProject />} />
+      <Route path="/projects/scu-content" element={<SCUContentProject />} />
+      <Route path="/projects/tshirt" element={<TShirtProject />} />
     </Routes>
   );
 }
