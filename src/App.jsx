@@ -4,13 +4,14 @@ import { ArrowUp, Linkedin, FileText, ArrowRight, Github, ChevronDown, Camera, M
 import { Routes, Route, Link } from "react-router-dom"; 
 
 // --- PROJECT PAGE IMPORTS ---
-// Ensure these files exist in your src folder
 import HipocampusProject from "./HipocampusProject"; 
 import RealSeqProject from "./RealSeqProject";       
 import TamalesProject from "./TamalesProject";       
 import EconometricsProject from "./EconometricsProject"; 
 import SCUContentProject from "./SCUContentProject"; 
-import TShirtProject from "./TShirtProject";         
+import TShirtProject from "./TShirtProject";      
+import TeamLinkProject from "./TeamLinkProject"; 
+import CrocsProject from "./CrocsProject";
 
 /* =============================================================================
   FLIP LINK COMPONENT
@@ -147,44 +148,64 @@ const Subtitle = ({ children, className = "" }) => (
 );
 
 /* =============================================================================
-  EXPERIENCE CARD COMPONENT
+  EXPERIENCE CARD COMPONENT (WITH LINK SUPPORT)
   =============================================================================
 */
-const ExperienceCard = ({ role, org, image, location, period }) => (
-  <motion.div 
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: false, amount: 0.1 }}
-    transition={{ duration: 0.5 }}
-    whileHover={{ scale: 1.02 }}
-    className="flex flex-row items-stretch gap-0 bg-zinc-900/50 border border-zinc-800 rounded-xl transition-colors group cursor-none hover:border-zinc-700 h-full overflow-hidden"
-  >
-    <div className="w-24 md:w-32 shrink-0 relative">
-        <img 
-            src={image} 
-            alt={typeof org === 'string' ? org : "Organization"} 
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-        />
-    </div>
-    
-    <div className="flex flex-col justify-center p-4 w-full min-w-0">
-        <h5 className="text-white font-bold text-xs md:text-sm uppercase leading-tight md:whitespace-nowrap md:overflow-hidden md:text-ellipsis">
-            {role}
-            <span className="absolute left-0 bottom-0 h-[2px] w-full bg-lime-400 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-        </h5>
+const ExperienceCard = ({ role, org, image, location, period, link }) => {
+  const CardContent = (
+    <motion.div 
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.1 }}
+        transition={{ duration: 0.5 }}
+        whileHover={{ scale: 1.02 }}
+        className="flex flex-row items-stretch gap-0 bg-zinc-900/50 border border-zinc-800 rounded-xl transition-colors group cursor-none hover:border-zinc-700 h-full overflow-hidden"
+    >
+        <div className="w-24 md:w-32 shrink-0 relative">
+            <img 
+                src={image} 
+                alt={typeof org === 'string' ? org : "Organization"} 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+            />
+        </div>
         
-        <div className="text-lime-400 font-bold text-xs md:text-sm mt-1 tracking-wide leading-tight" style={{ fontFamily: "'Lato', sans-serif" }}>
-            {org}
-        </div>
+        <div className="flex flex-col justify-center p-4 w-full min-w-0">
+            <h5 className="text-white font-bold text-xs md:text-sm uppercase leading-tight md:whitespace-nowrap md:overflow-hidden md:text-ellipsis">
+                {role}
+                <span className="absolute left-0 bottom-0 h-[2px] w-full bg-lime-400 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+            </h5>
+            
+            <div className="text-lime-400 font-bold text-xs md:text-sm mt-1 tracking-wide leading-tight" style={{ fontFamily: "'Lato', sans-serif" }}>
+                {org}
+            </div>
 
-        <div className="mt-2 flex flex-wrap items-center gap-x-2 text-[10px] md:text-xs">
-            <span className="text-zinc-400 font-medium">{location}</span>
-            <span className="text-zinc-700 hidden md:inline">•</span>
-            <span className="text-zinc-500 italic">{period}</span>
+            <div className="mt-2 flex flex-wrap items-center gap-x-2 text-[10px] md:text-xs">
+                <span className="text-zinc-400 font-medium">{location}</span>
+                <span className="text-zinc-700 hidden md:inline">•</span>
+                <span className="text-zinc-500 italic">{period}</span>
+            </div>
+
+            {/* Hint arrow if it's a link */}
+            {link && (
+                 <div className="mt-2 flex items-center gap-1 text-[10px] text-lime-400 font-bold uppercase opacity-0 group-hover:opacity-100 transition-opacity">
+                    View Project <ArrowRight size={10} />
+                 </div>
+            )}
         </div>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+
+  // If a link is provided, wrap the card in a Link component
+  if (link) {
+      return (
+          <Link to={link} className="block h-full">
+              {CardContent}
+          </Link>
+      );
+  }
+
+  return CardContent;
+};
 
 /* =============================================================================
   PROJECT CARD COMPONENT
@@ -277,8 +298,9 @@ const experienceData = [
     role: "Operations & Analytics",
     org: <>Hipocampus Centros <br/>de Aprendizaje</>,
     location: "Santa Clara, CA",
-    period: "July 2025 - Ongoing",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop"
+    period: "July 2025 - Present",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop",
+    link: "/projects/hipocampus"
   },
   {
     id: 2,
@@ -287,16 +309,18 @@ const experienceData = [
     org: "TeamLink",
     location: "Sydney, Australia",
     period: "June 2024 - July 2024",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop",
+    link: "/internships/teamlink"
   },
-  {
+ {
     id: 3,
     category: "internship",
     role: "EC Department Intern",
     org: "Crocs Asia",
     location: "Shanghai, China",
     period: "July 2023 - Aug 2023",
-    image: "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?q=80&w=2615&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?q=80&w=2615&auto=format&fit=crop",
+    link: "/internships/crocs"
   },
   // JOBS
   {
@@ -305,7 +329,7 @@ const experienceData = [
     role: "Lead TA (BUSN70)",
     org: "Santa Clara University",
     location: "Santa Clara, CA",
-    period: "March 2025 - Ongoing",
+    period: "March 2025 - Present",
     image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=2574&auto=format&fit=crop"
   },
   {
@@ -314,7 +338,7 @@ const experienceData = [
     role: "Ugrad Ambassador",
     org: "SCU Undergraduate Admissions",
     location: "Santa Clara, CA",
-    period: "April 2024 - Ongoing",
+    period: "April 2024 - Present",
     image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2670&auto=format&fit=crop"
   },
   {
@@ -323,7 +347,7 @@ const experienceData = [
     role: "International Intern",
     org: "SCU Undergraduate Admissions",
     location: "Santa Clara, CA",
-    period: "Jan 2025 - Ongoing",
+    period: "Jan 2025 - Present",
     image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2669&auto=format&fit=crop"
   },
   {
@@ -332,7 +356,7 @@ const experienceData = [
     role: "Managing Editor",
     org: "The Redwood Yearbook",
     location: "Santa Clara, CA",
-    period: "March 2025 - Ongoing",
+    period: "March 2025 - Present",
     image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2670&auto=format&fit=crop"
   },
   {
@@ -341,7 +365,7 @@ const experienceData = [
     role: "Photographer",
     org: "The Santa Clara Newspaper",
     location: "Santa Clara, CA",
-    period: "Sept 2025 - Ongoing",
+    period: "Sept 2025 - Present",
     image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=2528&auto=format&fit=crop"
   },
   // INVOLVEMENTS
@@ -351,7 +375,7 @@ const experienceData = [
     role: "President",
     org: "SCU INFORMS",
     location: "Santa Clara, CA",
-    period: "March 2025 - Ongoing",
+    period: "March 2025 - Present",
     image: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=2670&auto=format&fit=crop"
   },
   {
@@ -360,7 +384,7 @@ const experienceData = [
     role: "Director of Marketing",
     org: "Info. Systems Network", 
     location: "Santa Clara, CA",
-    period: "Feb 2025 - Ongoing",
+    period: "Feb 2025 - Present",
     image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=2574&auto=format&fit=crop"
   },
   {
@@ -379,7 +403,8 @@ const experienceData = [
     org: "Civil Society Institute",
     location: "Santa Clara, CA",
     period: "Sept 2024 - Present", 
-    image: "https://images.unsplash.com/photo-1617196038658-4101f9e35da4?q=80&w=2670&auto=format&fit=crop"
+    // UPDATED: Long table photo
+    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2670&auto=format&fit=crop"
   },
   {
     id: 12,
@@ -388,7 +413,8 @@ const experienceData = [
     org: "Japanese Conversation Table",
     location: "Santa Clara, CA",
     period: "March 2023 - Present", 
-    image: "https://images.unsplash.com/photo-1545987796-200677ee8e00?q=80&w=2670&auto=format&fit=crop"
+    // UPDATED: Group/Circle discussion photo
+    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=2670&auto=format&fit=crop"
   },
   {
     id: 13,
@@ -421,7 +447,7 @@ function Home() {
 
   const photos = ["/ezheadshot.jpg", "/hobby1.jpg", "/hobby2.jpg", "/hobby3.jpg"];
 
-  // FILTER LOGIC (Kept for state stability, though not used in UI now)
+  // FILTER LOGIC
   const filteredExperiences = useMemo(() => {
     if (filter === "all") return experienceData;
     return experienceData.filter((item) => item.category === filter);
@@ -469,7 +495,6 @@ function Home() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
-  // Nav Selection Handler
   const handleNavSelection = (category) => {
     setFilter(category);
     const element = document.getElementById("experiences");
@@ -495,7 +520,6 @@ function Home() {
             -webkit-overflow-scrolling: touch;
         }
         
-        /* HIDE DEFAULT POINTER CURSOR ONLY ON MOUSE DEVICES */
         @media (pointer: fine) {
             a, button, [role="button"] {
                 cursor: none !important;
@@ -532,7 +556,6 @@ function Home() {
             </div>
         </div>
         
-        {/* PROGRESS BAR */}
         <motion.div
             className="absolute bottom-0 left-0 right-0 h-1 bg-lime-400 origin-left z-50"
             style={{ scaleX: useSpring(useScroll().scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 }) }}
@@ -677,12 +700,10 @@ function Home() {
                             viewport={{ once: false }}
                             className="text-zinc-400 text-sm leading-relaxed text-center px-10 flex flex-col items-center"
                         >
-                            <p className="mb-4">
-                              I am always up for a hike or spending time outside. I have a love for nature and sustainability.
-                            </p>
-                            <p className="mb-6">
-                              My passion lies in the intersection of social responsibility, technology, and innovation. 
-                              If there are any projects you are working on around this area, please contact me and I'd love to collaborate!
+                            <p className="mb-8">
+                              Whether I’m behind a camera, leading a tour, or deep in a dataset, I’m always looking for the story. 
+                              I believe the best decisions come from understanding the narrative behind the numbers. 
+                              By combining technical skills and human insight, I help projects find their voice and make a tangible impact.
                             </p>
 
                             <motion.a 
@@ -743,9 +764,9 @@ function Home() {
                     className="hidden md:block"
                 >
                     <p className="text-zinc-400 leading-relaxed text-lg w-full mb-6">
-                        I am always up for a hike or spending time outside. I have a love for nature and sustainability. 
-                        My passion lies in the intersection of social responsibility, technology, and innovation. 
-                        If there are any projects you are working on around this area, please contact me and I'd love to collaborate!
+                        Whether I’m behind a camera, leading a tour, or deep in a dataset, I’m always looking for the story. 
+                        I believe the best decisions come from understanding the narrative behind the numbers. 
+                        By combining technical skills and human insight, I help projects find their voice and make a tangible impact.
                     </p>
 
                     <motion.a 
@@ -842,14 +863,13 @@ function Home() {
         </div>
       </section>
 
-      {/* SEPARATOR BETWEEN ABOUT AND PROJECTS - Reduced Padding */}
+      {/* SEPARATOR BETWEEN ABOUT AND PROJECTS */}
       <div className="flex justify-center pb-4 pt-2 md:pb-4 md:pt-4">
           <div className="w-16 h-1 bg-lime-400 rounded-full"></div>
       </div>
 
-      {/* PROJECTS SECTION - EXPANDED CONTAINER for 6 Cards */}
+      {/* PROJECTS SECTION */}
       <section id="projects" className="relative z-10 min-h-screen px-6 pt-0 pb-12 md:pb-12 bg-zinc-950 flex flex-col justify-start md:justify-center scroll-mt-32">
-        {/* CHANGED: max-w-7xl makes the cards less wide (more standard) */}
         <div className="w-full max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -863,7 +883,6 @@ function Home() {
             </h3>
           </motion.div>
 
-          {/* CHANGED: Grid layout to 2 columns on mobile (2:2:2) and 3 on desktop (3:3) */}
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
             <ProjectCard 
               delay={0.1}
@@ -901,7 +920,6 @@ function Home() {
               linkTo="/projects/econometrics"
             />
 
-            {/* NEW CARD ADDED HERE */}
             <ProjectCard 
               delay={0.45}
               title="SCU Content Creation"
@@ -931,7 +949,6 @@ function Home() {
       {/* EXPERIENCES SECTION */}
       <section id="experiences" className="relative z-10 min-h-screen px-6 py-12 bg-zinc-950 flex flex-col justify-start md:justify-center border-t-0 border-zinc-800/50">
         <div className="max-w-6xl w-full mx-auto">
-            {/* Header Spacing Reduced */}
             <motion.div 
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -945,10 +962,8 @@ function Home() {
             </motion.div>
 
             <div className="space-y-16">
-                {/* INTERNSHIPS - COMPACT GRID LAYOUT */}
-                {/* ADDED scroll-mt-28 to fix jump offset */}
+                {/* INTERNSHIPS */}
                 <div id="internships" className="scroll-mt-28">
-                    {/* Centered Title with Bars */}
                     <SectionTitle title="Internships" />
                     
                     <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -960,7 +975,6 @@ function Home() {
 
                 {/* JOBS */}
                 <div id="campus-jobs" className="scroll-mt-28">
-                    {/* Centered Title with Bars */}
                     <SectionTitle title="On-Campus Jobs" />
 
                     <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -972,7 +986,6 @@ function Home() {
 
                 {/* CLUBS */}
                 <div id="clubs" className="scroll-mt-28">
-                    {/* Centered Title with Bars */}
                     <SectionTitle title="Club & Other Involvements" />
 
                     <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -985,12 +998,12 @@ function Home() {
         </div>
       </section>
 
-      {/* NEW: SEPARATOR BETWEEN EXPERIENCES AND INTERESTS */}
+      {/* SEPARATOR BETWEEN EXPERIENCES AND INTERESTS */}
       <div className="flex justify-center pb-4 pt-2 md:pb-8 md:pt-4">
           <div className="w-16 h-1 bg-lime-400 rounded-full"></div>
       </div>
 
-      {/* NEW: INTERESTS SECTION (Removed top/bottom padding for tight fit) */}
+      {/* INTERESTS SECTION */}
       <section id="interests" className="relative z-10 min-h-screen px-6 pb-12 pt-0 md:pb-12 bg-zinc-950 flex flex-col justify-start md:justify-center border-t-0 border-zinc-800/50">
         <div className="max-w-6xl w-full mx-auto">
             <SectionTitle title="Interests & Hobbies" />
@@ -1006,12 +1019,12 @@ function Home() {
         </div>
       </section>
 
-      {/* NEW: SEPARATOR BETWEEN INTERESTS AND CONTACT */}
+      {/* SEPARATOR BETWEEN INTERESTS AND CONTACT */}
       <div className="flex justify-center pb-4 pt-0 md:pb-8 md:pt-0">
           <div className="w-16 h-1 bg-lime-400 rounded-full"></div>
       </div>
 
-      {/* NEW: CONTACT SECTION (Removed top padding) */}
+     {/* CONTACT SECTION */}
       <section id="contact" className="relative z-10 px-6 pt-0 pb-24 bg-zinc-950 flex flex-col justify-center items-center border-t-0 border-zinc-800/50">
         <div className="max-w-5xl w-full">
             <SectionTitle title="Let's Connect!" />
@@ -1032,7 +1045,7 @@ function Home() {
                         I'd love to discuss new opportunities, collaborations, or just chatting about technology and entrepreneurship!
                     </p>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 w-full mb-8">
                         <div className="flex flex-col gap-1">
                             <span className="text-xs font-bold uppercase tracking-widest text-lime-400">School Email</span>
                             <a href="mailto:ezhang2@scu.edu" className="text-white hover:text-lime-400 transition-colors">ezhang2@scu.edu</a>
@@ -1043,9 +1056,10 @@ function Home() {
                             <a href="mailto:elaine.zhang.ly@gmail.com" className="text-white hover:text-lime-400 transition-colors">elaine.zhang.ly@gmail.com</a>
                         </div>
 
+                        {/* NEW PHONE NUMBER */}
                         <div className="flex flex-col gap-1">
-                            <span className="text-xs font-bold uppercase tracking-widest text-lime-400">LinkedIn</span>
-                            <a href="https://linkedin.com/in/elainezhang2027" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400 transition-colors">Elaine Zhang</a>
+                            <span className="text-xs font-bold uppercase tracking-widest text-lime-400">Phone Number</span>
+                            <span className="text-white">(530) 407-7195</span>
                         </div>
 
                         <div className="flex flex-col gap-1">
@@ -1054,12 +1068,46 @@ function Home() {
                         </div>
                     </div>
 
-                    <a 
-                        href="mailto:ezhang2@scu.edu"
-                        className="mt-8 inline-flex items-center gap-2 bg-lime-400 text-black px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:bg-white transition-colors"
-                    >
-                        Get In Touch <ArrowRight size={16} />
-                    </a>
+                    {/* SOCIAL LINKS ROW */}
+                    <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                        
+                        {/* Resume */}
+                        <motion.a 
+                            href="/resume.pdf" target="_blank" rel="noopener noreferrer"
+                            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                            className="flex items-center gap-2 border border-zinc-700 bg-transparent px-5 py-3 text-xs font-bold uppercase tracking-widest text-zinc-300 transition-all hover:bg-lime-400 hover:text-black hover:border-lime-400 rounded-full"
+                        >
+                            Resume <FileText size={16} />
+                        </motion.a>
+
+                        {/* LinkedIn */}
+                        <motion.a 
+                            href="https://www.linkedin.com/in/elainezhang2027" target="_blank" rel="noopener noreferrer"
+                            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                            className="flex items-center gap-2 border border-zinc-700 bg-transparent px-5 py-3 text-xs font-bold uppercase tracking-widest text-zinc-300 transition-all hover:text-blue-400 hover:border-blue-400 rounded-full"
+                        >
+                            LinkedIn <Linkedin size={16} />
+                        </motion.a>
+
+                        {/* GitHub */}
+                        <motion.a 
+                            href="https://github.com/alegitimatekiwi?tab=repositories" target="_blank" rel="noopener noreferrer"
+                            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                            className="flex items-center gap-2 border border-zinc-700 bg-transparent px-5 py-3 text-xs font-bold uppercase tracking-widest text-zinc-300 transition-all hover:text-purple-400 hover:border-purple-400 rounded-full"
+                        >
+                            GitHub <Github size={16} />
+                        </motion.a>
+
+                        {/* Photography */}
+                        <motion.a 
+                            href="https://ezhang2.myportfolio.com/" target="_blank" rel="noopener noreferrer"
+                            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                            className="flex items-center gap-2 border border-zinc-700 bg-transparent px-5 py-3 text-xs font-bold uppercase tracking-widest text-zinc-300 transition-all hover:text-white hover:border-white rounded-full"
+                        >
+                            Photography <Camera size={16} />
+                        </motion.a>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -1090,11 +1138,13 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/projects/hipocampus" element={<HipocampusProject />} />
+      <Route path="/internships/teamlink" element={<TeamLinkProject />} />
       <Route path="/projects/realseq" element={<RealSeqProject />} />
       <Route path="/projects/tamales" element={<TamalesProject />} />
       <Route path="/projects/econometrics" element={<EconometricsProject />} />
       <Route path="/projects/scu-content" element={<SCUContentProject />} />
       <Route path="/projects/tshirt" element={<TShirtProject />} />
+      <Route path="/internships/crocs" element={<CrocsProject />} />
     </Routes>
   );
 }
