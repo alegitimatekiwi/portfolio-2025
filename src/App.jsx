@@ -299,17 +299,17 @@ const experienceData = [
     org: <>Hipocampus Centros <br/>de Aprendizaje</>,
     location: "Santa Clara, CA",
     period: "July 2025 - Present",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop",
+    image: "/hipocover.jpg",
     link: "/projects/hipocampus"
   },
   {
     id: 2,
     category: "internship",
     role: "Digital Marketing",
-    org: "TeamLink",
+    org: "TEAMLINK",
     location: "Sydney, Australia",
     period: "June 2024 - July 2024",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop",
+    image: "teamlinkcover.jpg",
     link: "/internships/teamlink"
   },
  {
@@ -319,7 +319,7 @@ const experienceData = [
     org: "Crocs Asia",
     location: "Shanghai, China",
     period: "July 2023 - Aug 2023",
-    image: "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?q=80&w=2615&auto=format&fit=crop",
+    image: "crocscover.jpg",
     link: "/internships/crocs"
   },
   // JOBS
@@ -420,7 +420,7 @@ const experienceData = [
     id: 13,
     category: "involvement",
     role: "Fellow",
-    org: "Possible Tech Accelerator Program", 
+    org: "Possible Tech Accelerator", 
     location: "Remote",
     period: "Jan 2025 - Mar 2025",
     image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2670&auto=format&fit=crop"
@@ -514,21 +514,35 @@ function Home() {
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
         
+        /* 1. HIDE SCROLLBARS */
+        ::-webkit-scrollbar { display: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 2. BASE STYLES */
         html, body {
             overflow-x: hidden;
             width: 100%;
             -webkit-overflow-scrolling: touch;
         }
-        
+
+        /* 3. NUCLEAR CURSOR HIDE (Desktop Only) */
         @media (pointer: fine) {
-            a, button, [role="button"] {
+            /* Target the root and body */
+            html, body, #root {
+                cursor: none !important;
+            }
+            
+            /* Target all specific interactive elements that usually force a pointer */
+            a, button, input, select, textarea, [role="button"] {
+                cursor: none !important;
+            }
+
+            /* Universal selector to catch everything else */
+            * {
                 cursor: none !important;
             }
         }
-
-        ::-webkit-scrollbar { display: none; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
       {/* NAVIGATION */}
