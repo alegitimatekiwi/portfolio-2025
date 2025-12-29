@@ -565,9 +565,9 @@ export default function RealSeqProject() {
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         
-                        {/* DOC 1: DIRECT TRAFFIC */}
+                        {/* DOC 1: INSTAGRAM STRATEGY */}
                         <a 
-                            href="/Direct Traffic Tracking.pdf" 
+                            href="/strategy.pdf" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="group p-4 bg-zinc-900 border border-zinc-700 hover:border-lime-400 rounded-lg transition-all flex items-start gap-4"
@@ -576,16 +576,16 @@ export default function RealSeqProject() {
                                 <BarChart3 size={24} />
                             </div>
                             <div>
-                                <h5 className="text-white font-bold text-sm uppercase">Dark Traffic Analysis</h5>
+                                <h5 className="text-white font-bold text-sm uppercase">Instagram Strategy Guide</h5>
                                 <p className="text-[10px] text-zinc-400 mt-1 leading-relaxed">
-                                    A technical breakdown I wrote explaining "Dark Traffic" and proposing a UTM parameter strategy to track ROI.
+                                    The comprehensive 16-page content pillar and shot list document delivered to the client.
                                 </p>
                             </div>
                         </a>
 
-                        {/* DOC 2: DIAGNOSTIC INTERVIEW */}
+                        {/* DOC 2: PROPOSAL */}
                         <a 
-                            href="/Laura & Micah Diagnostic Interview Questions.pdf" 
+                            href="/proposal.pdf" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="group p-4 bg-zinc-900 border border-zinc-700 hover:border-pink-500 rounded-lg transition-all flex items-start gap-4"
@@ -594,9 +594,9 @@ export default function RealSeqProject() {
                                 <FileText size={24} />
                             </div>
                             <div>
-                                <h5 className="text-white font-bold text-sm uppercase">Diagnostic Interview</h5>
+                                <h5 className="text-white font-bold text-sm uppercase">Paid Engagement Proposal</h5>
                                 <p className="text-[10px] text-zinc-400 mt-1 leading-relaxed">
-                                    The consulting framework used to identify client pain points, customer personas, and project goals.
+                                    The business proposal outlining the transition from our initial free audit to a paid strategic retainer.
                                 </p>
                             </div>
                         </a>

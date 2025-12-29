@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { 
   ArrowLeft, ArrowRight, ShoppingBag, Search, Code, 
   ExternalLink, Globe, MapPin, Users, DollarSign, BookOpen, 
-  ChefHat, CheckCircle, TrendingUp, Video, FileText
+  ChefHat, CheckCircle, TrendingUp, Video, FileText, Presentation
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -105,7 +105,7 @@ export default function TamalesProject() {
             <h2 className="text-xl text-zinc-400">Sole Proprietorship Consulting</h2>
         </div>
 
-        {/* HERO IMAGE: CLIENT DINNER */}
+        {/* HERO IMAGE */}
         <motion.div 
             variants={heroVariants}
             initial="hidden"
@@ -180,15 +180,15 @@ export default function TamalesProject() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
-                {/* 1. LOCAL SEO */}
+                {/* 1. LOCAL SEO - CENTERED ICON, LEFT TEXT */}
                 <div className="bg-zinc-900/50 p-6 rounded-xl border border-zinc-800 hover:border-lime-400/30 transition-colors">
-                    <div className="flex flex-col items-center text-center md:items-start md:text-left gap-4">
+                    <div className="flex flex-col items-center md:items-start gap-4">
                         <div className="p-3 bg-blue-500/10 rounded-lg text-blue-400 w-fit">
                             <Search size={24} />
                         </div>
-                        <div>
-                            <h4 className="font-bold text-white text-sm uppercase mb-2">Local SEO & Presence</h4>
-                            <ul className="list-disc list-inside md:list-outside pl-0 md:pl-4 text-xs text-zinc-400 space-y-2">
+                        <div className="w-full text-left">
+                            <h4 className="font-bold text-white text-sm uppercase mb-2 text-center md:text-left">Local SEO & Presence</h4>
+                            <ul className="list-disc list-outside pl-5 text-xs text-zinc-400 space-y-2">
                                 <li>Set up Google My Business and Yelp pages to capture local search traffic.</li>
                                 <li>Guided Irving through the mandatory video verification process to activate his Google profile.</li>
                                 <li>Linked all profiles to Instagram to cross pollinate traffic.</li>
@@ -197,15 +197,15 @@ export default function TamalesProject() {
                     </div>
                 </div>
 
-                {/* 2. STORYTELLING WEBSITE */}
+                {/* 2. STORYTELLING WEBSITE - CENTERED ICON, LEFT TEXT */}
                 <div className="bg-zinc-900/50 p-6 rounded-xl border border-zinc-800 hover:border-lime-400/30 transition-colors">
-                    <div className="flex flex-col items-center text-center md:items-start md:text-left gap-4">
+                    <div className="flex flex-col items-center md:items-start gap-4">
                         <div className="p-3 bg-purple-500/10 rounded-lg text-purple-400 w-fit">
                             <Globe size={24} />
                         </div>
-                        <div>
-                            <h4 className="font-bold text-white text-sm uppercase mb-2">Wix Website & Branding</h4>
-                            <ul className="list-disc list-inside md:list-outside pl-0 md:pl-4 text-xs text-zinc-400 space-y-2">
+                        <div className="w-full text-left">
+                            <h4 className="font-bold text-white text-sm uppercase mb-2 text-center md:text-left">Wix Website & Branding</h4>
+                            <ul className="list-disc list-outside pl-5 text-xs text-zinc-400 space-y-2">
                                 <li>Walked Irving through the entire Wix setup process and gathered necessary documentation.</li>
                                 <li>Built a bilingual site focused on storytelling to connect with his diverse customer base.</li>
                                 <li>Integrated Square for seamless payment processing.</li>
@@ -214,15 +214,15 @@ export default function TamalesProject() {
                     </div>
                 </div>
 
-                {/* 3. SOCIAL EXPANSION */}
+                {/* 3. SOCIAL EXPANSION - CENTERED ICON, LEFT TEXT */}
                 <div className="bg-zinc-900/50 p-6 rounded-xl border border-zinc-800 hover:border-lime-400/30 transition-colors">
-                    <div className="flex flex-col items-center text-center md:items-start md:text-left gap-4">
+                    <div className="flex flex-col items-center md:items-start gap-4">
                         <div className="p-3 bg-pink-500/10 rounded-lg text-pink-400 w-fit">
                             <Users size={24} />
                         </div>
-                        <div>
-                            <h4 className="font-bold text-white text-sm uppercase mb-2">Photography & Content</h4>
-                            <ul className="list-disc list-inside md:list-outside pl-0 md:pl-4 text-xs text-zinc-400 space-y-2">
+                        <div className="w-full text-left">
+                            <h4 className="font-bold text-white text-sm uppercase mb-2 text-center md:text-left">Photography & Content</h4>
+                            <ul className="list-disc list-outside pl-5 text-xs text-zinc-400 space-y-2">
                                 <li>Captured high quality photography of his dishes to make the website aesthetically appealing.</li>
                                 <li>Produced video content and bio variations for Instagram.</li>
                                 <li>Created a Facebook page to reach older local demographics.</li>
@@ -233,7 +233,7 @@ export default function TamalesProject() {
 
             </div>
 
-            <div className="mt-8 flex flex-col md:flex-row gap-4">
+            <div className="mt-8 flex flex-wrap gap-4">
                 <a 
                     href="https://chikenstamales.wixsite.com/home" 
                     target="_blank" 
@@ -241,6 +241,24 @@ export default function TamalesProject() {
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-zinc-100 text-black text-xs font-bold uppercase tracking-widest hover:bg-lime-400 transition-colors shadow-lg justify-center"
                 >
                     <Globe size={16} /> Visit Live Website
+                </a>
+                
+                <a 
+                    href="/tamales.pdf" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-700 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest hover:border-lime-400 hover:text-lime-400 transition-colors justify-center"
+                >
+                    <Presentation size={16} /> View Final Presentation
+                </a>
+
+                <a 
+                    href="/npireflection.pdf" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-700 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest hover:border-lime-400 hover:text-lime-400 transition-colors justify-center"
+                >
+                    <BookOpen size={16} /> Read Reflection PDF
                 </a>
             </div>
         </motion.div>
@@ -261,7 +279,7 @@ export default function TamalesProject() {
             {/* Desktop: 3-column grid. Mobile: 1 column stack. */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
-                {/* VIDEO: Horizontal (Spans 2 columns on desktop) */}
+                {/* Row 1, Cols 1-2: VIDEO (Horizontal) */}
                 <div className="md:col-span-2 bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 h-64 md:h-80 relative group">
                     <video 
                         className="w-full h-full object-cover" 
@@ -279,8 +297,8 @@ export default function TamalesProject() {
                     </div>
                 </div>
 
-                {/* TAMALE PHOTO: Vertical (Takes 1 column, full height) */}
-                <div className="relative group rounded-xl overflow-hidden border border-zinc-800 h-64 md:h-80 md:col-span-1">
+                {/* Row 1, Col 3: TAMALE PHOTO (Vertical) */}
+                <div className="md:col-span-1 relative group rounded-xl overflow-hidden border border-zinc-800 h-64 md:h-80">
                     <img 
                         src="/tamale.jpg" 
                         alt="Product shot of tamale" 
@@ -288,18 +306,18 @@ export default function TamalesProject() {
                     />
                 </div>
 
-                {/* IRVING PHOTO: Horizontal (Spans 2 columns on desktop) */}
+                {/* Row 2, Cols 1-2: IRVING PHOTO (Horizontal) */}
                 <div className="md:col-span-2 relative group rounded-xl overflow-hidden border border-zinc-800 h-64 md:h-64">
                     <img 
                         src="/irving1.jpg" 
-                        alt="Client site visit" 
+                        alt="Client site visit with Irving" 
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                     />
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
                 </div>
 
-                {/* LOGO: Square (Takes 1 column) */}
-                <div className="md:col-span-1 relative group rounded-xl overflow-hidden border border-zinc-800 h-64 md:h-64 bg-zinc-900 flex items-center justify-center p-4">
+                {/* Row 2, Col 3: LOGO (Square) */}
+                <div className="md:col-span-1 relative group rounded-xl overflow-hidden border border-zinc-800 h-64 md:h-64 bg-zinc-900 flex items-center justify-center p-8">
                     <img 
                         src="/logo.jpg" 
                         alt="Rebranding logo concepts" 
@@ -313,7 +331,7 @@ export default function TamalesProject() {
             </p>
         </motion.div>
 
-        {/* SUMMARY: REFLECTION (UPDATED) */}
+        {/* SUMMARY: REFLECTION (REWRITTEN AS SUMMARY) */}
         <motion.div 
             variants={scrollVariants}
             initial="hidden"
@@ -333,27 +351,16 @@ export default function TamalesProject() {
                     </h3>
                 </div>
                 
-                <div className="prose prose-invert prose-sm text-zinc-300 max-w-2xl">
-                    <p className="mb-4 leading-relaxed">
-                        This experience broadened my understanding of poverty and inequality beyond theoretical coursework. Interacting directly with a small business owner like Irving revealed challenges I had not anticipated, such as the precariousness of permits and supply chains. It taught me that small business ownership has no fixed end time and requires constant adaptation.
+                <div className="prose prose-invert prose-sm text-zinc-300 max-w-2xl leading-relaxed">
+                    <p className="mb-4">
+                        I realized that small business ownership isn't just about revenue; it's about navigating a maze of permits, supply chains, and endless workdays with no "clock-out" time.
                     </p>
-                    <p className="mb-4 leading-relaxed">
-                        A critical moment occurred when Irving's industrial kitchen went bankrupt in week 7 of spring quarter. We had to pivot our entire $3,000 grant budget from marketing materials to a down payment for a new kitchen space. This crisis underscored a vital lesson: survival comes before strategy.
+                    <p className="mb-4">
+                        The most pivotal moment was the $3,000 grant. We had a polished plan for marketing and digital ads, but when Irving's industrial kitchen closed unexpectedly in Week 7, that strategy went out the window. We pivoted immediately, using the funds to secure a new kitchen so he could simply legally operate.
                     </p>
-                    <p className="mb-6 leading-relaxed">
-                        Working with my team (J-RAE) was a highlight of my academic career. We balanced our distinct roles effectively, from Adrian's storytelling to James's permit research and Ryan's long term planning. It reinforced that the best way to learn business is to throw yourself into it and work it out as you go.
+                    <p className="mb-6">
+                        It taught me that in the real world, resilience beats perfection, and survival always comes before strategy. You have to be ready to pivot instantly when the ground shifts beneath you.
                     </p>
-                    
-                    <div className="mt-6">
-                        <a 
-                            href="/npireflection.pdf" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-lime-400 hover:text-white transition-colors"
-                        >
-                            <BookOpen size={14} /> Read Full Reflection PDF
-                        </a>
-                    </div>
                 </div>
             </div>
         </motion.div>
