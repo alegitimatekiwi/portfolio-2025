@@ -12,6 +12,7 @@ import SCUContentProject from "./SCUContentProject";
 import TShirtProject from "./TShirtProject";      
 import TeamLinkProject from "./TeamLinkProject"; 
 import CrocsProject from "./CrocsProject";
+import NetworkBackground from "./NetworkBackground";
 
 /* =============================================================================
   FLIP LINK COMPONENT
@@ -505,10 +506,8 @@ function Home() {
 
   return (
     <div className="relative min-h-screen bg-zinc-950 text-white selection:bg-lime-400 selection:text-black md:cursor-none cursor-auto overflow-x-hidden w-full">
-      
-      <div className="hidden md:block pointer-events-none fixed inset-0 z-0 opacity-[0.03]"
-           style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} 
-      ></div>
+
+      <NetworkBackground />
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap');
@@ -683,7 +682,7 @@ function Home() {
       </div>
 
       {/* ABOUT SECTION */}
-      <section id="about" className="relative z-10 flex items-center justify-center px-6 py-6 md:py-12 bg-zinc-950">
+      <section id="about" className="relative z-10 flex items-center justify-center px-6 py-6 md:py-12">
         <div className="max-w-6xl w-full flex flex-col md:flex-row gap-8 md:gap-16 items-start">
             
             <div className="w-full md:w-80 flex flex-col gap-8 shrink-0 relative md:sticky md:top-32">
@@ -883,7 +882,7 @@ function Home() {
       </div>
 
       {/* PROJECTS SECTION */}
-      <section id="projects" className="relative z-10 min-h-screen px-6 pt-0 pb-12 md:pb-12 bg-zinc-950 flex flex-col justify-start md:justify-center scroll-mt-32">
+      <section id="projects" className="relative z-10 min-h-screen px-6 pt-0 pb-12 md:pb-12 flex flex-col justify-start md:justify-center scroll-mt-32">
         <div className="w-full max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -961,7 +960,7 @@ function Home() {
       </div>
 
       {/* EXPERIENCES SECTION */}
-      <section id="experiences" className="relative z-10 min-h-screen px-6 py-12 bg-zinc-950 flex flex-col justify-start md:justify-center border-t-0 border-zinc-800/50">
+      <section id="experiences" className="relative z-10 min-h-screen px-6 py-12 flex flex-col justify-start md:justify-center border-t-0 border-zinc-800/50">
         <div className="max-w-6xl w-full mx-auto">
             <motion.div 
                 initial={{ opacity: 0, y: 30 }}
@@ -1018,7 +1017,7 @@ function Home() {
       </div>
 
       {/* INTERESTS SECTION */}
-      <section id="interests" className="relative z-10 min-h-screen px-6 pb-12 pt-0 md:pb-12 bg-zinc-950 flex flex-col justify-start md:justify-center border-t-0 border-zinc-800/50">
+      <section id="interests" className="relative z-10 min-h-screen px-6 pb-12 pt-0 md:pb-12 flex flex-col justify-start md:justify-center border-t-0 border-zinc-800/50">
         <div className="max-w-6xl w-full mx-auto">
             <SectionTitle title="Interests & Hobbies" />
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -1039,7 +1038,7 @@ function Home() {
       </div>
 
      {/* CONTACT SECTION */}
-      <section id="contact" className="relative z-10 px-6 pt-0 pb-24 bg-zinc-950 flex flex-col justify-center items-center border-t-0 border-zinc-800/50">
+      <section id="contact" className="relative z-10 px-6 pt-0 pb-24 flex flex-col justify-center items-center border-t-0 border-zinc-800/50">
         <div className="max-w-5xl w-full">
             <SectionTitle title="Let's Connect!" />
             
